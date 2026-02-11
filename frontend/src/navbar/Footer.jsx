@@ -12,7 +12,7 @@ const socialMidia = [
   {
     name: "LinkedIn",
     icon: <FaLinkedin />,
-    link: "https://www.linkedin.com/in/soumik-ghatak-6584bb23b/"
+    link: "https://www.linkedin.com/in/soumik-ghatak-6584bb23b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
   },
   {
     name: "Instagram",
