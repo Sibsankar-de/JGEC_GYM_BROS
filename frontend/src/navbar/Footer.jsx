@@ -7,12 +7,12 @@ const socialMidia = [
   {
     name: "GitHub",
     icon: <FaGithub />,
-    link: "https://github.com/soumikghatak"
+    link: "https://github.com/soumik7063"
   },
   {
     name: "LinkedIn",
     icon: <FaLinkedin />,
-    link: "https://www.linkedin.com/in/soumik-ghatak-9273a5234/"
+    link: "https://www.linkedin.com/in/soumik-ghatak-6584bb23b/"
   },
   {
     name: "Instagram",
