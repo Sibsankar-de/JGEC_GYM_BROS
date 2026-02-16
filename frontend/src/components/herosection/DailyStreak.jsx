@@ -4,14 +4,19 @@ import Auth from '../auth/Auth';
 import { workoutContext } from '../../context/WorkoutContext';
 
 const convertDate = (d) => {
-  const [dd, mm, yyyy] = d.split("/");
-  const paddedDD = dd.padStart(2, "0");
-  const paddedMM = mm.padStart(2, "0");
+  if (!d) return "";
+  // Check if date is already in YYYY/MM/DD format
+  if (/^\d{4}\/\d{2}\/\d{2}$/.test(d)) return d;
 
-  const formatted = `${yyyy}/${paddedMM}/${paddedDD}`;
-
-
-  return formatted;
+  // Handle other formats if necessary, or fallback
+  // Assuming input might be DD/MM/YYYY
+  const parts = d.split("/");
+  if (parts.length === 3) {
+    if (parts[0].length === 4) return d; // Already YYYY/MM/DD
+    const [dd, mm, yyyy] = parts;
+    return `${yyyy}/${mm.padStart(2, '0')}/${dd.padStart(2, '0')}`;
+  }
+  return d;
 };
 
 const motivationalQuotes = [
@@ -25,7 +30,7 @@ const motivationalQuotes = [
 ];
 
 const DailyStreak = () => {
-  
+
   const data = useContext(workoutContext);
   const [dates, setDates] = useState([]);
   const [randomQuote, setRandomQuote] = useState("");
@@ -42,7 +47,7 @@ const DailyStreak = () => {
         date: convertDate(workout.date),
         count: 10
       }));
-      setDates(formatted);   
+      setDates(formatted);
     }
   }, [data]);
 
@@ -53,7 +58,7 @@ const DailyStreak = () => {
   return (
     <div className='min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4'>
       <div className='max-w-5xl mx-auto'>
-        
+
         {/* Header Section */}
         <div className='text-center mb-8'>
           <div className='text-6xl mb-4'>🔥</div>
@@ -126,7 +131,7 @@ const DailyStreak = () => {
                 <h2 className='text-2xl font-bold text-gray-800 dark:text-white mb-2'>Activity Calendar</h2>
                 <p className='text-gray-600 dark:text-gray-400'>Your workout consistency at a glance</p>
               </div>
-              
+
               <div className='flex justify-center'>
                 <HeatMap
                   value={dates}

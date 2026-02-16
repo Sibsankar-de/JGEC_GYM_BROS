@@ -3,51 +3,57 @@ import { useForm } from "react-hook-form";
 import { workoutContext } from "../context/WorkoutContext";
 import { useContext } from "react";
 
-const workoutOptionsToindex ={
-    "Shoulder Press":1,
-    "Back":2,
-    "Biceps":3,
-    "Triceps":4,
-    "Chest":5,
-    "Legs":6,
-    "Abs":7,
-    "Cardio":8
+const workoutOptionsToindex = {
+  "Shoulder Press": 1,
+  "Back": 2,
+  "Biceps": 3,
+  "Triceps": 4,
+  "Chest": 5,
+  "Legs": 6,
+  "Abs": 7,
+  "Cardio": 8
 }
 
 const options = ["Shoulder Press", "Back", "Biceps", "Triceps", "Chest", "Legs", "Abs", "Cardio"];
 const date = new Date();
 
 const workoutEmojis = {
-    "Shoulder Press": "🏋️‍♂️",
-    "Back": "🔙",
-    "Biceps": "💪",
-    "Triceps": "🦾",
-    "Chest": "🫁",
-    "Legs": "🦵",
-    "Abs": "🔥",
-    "Cardio": "❤️"
+  "Shoulder Press": "🏋️‍♂️",
+  "Back": "🔙",
+  "Biceps": "💪",
+  "Triceps": "🦾",
+  "Chest": "🫁",
+  "Legs": "🦵",
+  "Abs": "🔥",
+  "Cardio": "❤️"
 };
 
 export default function CheckboxForm() {
-    const [selectedOptions, setSelectedOptions] = React.useState([]);
+  const [selectedOptions, setSelectedOptions] = React.useState([]);
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
-  const {handelWorkout,loading} = useContext(workoutContext);
-  
+  const { handelWorkout, loading } = useContext(workoutContext);
+
   const onSubmit = (data) => {
-    if(data.selectedOptions.length>0){
-        const selectedIndexes = data.selectedOptions.map(opt=>workoutOptionsToindex[opt]);
-        setSelectedOptions(selectedIndexes);
-        handelWorkout({
-            date: date.toLocaleDateString(),
-            exercises: selectedIndexes
-        });
-    }else{
-        console.log("No options selected");
+    if (data.selectedOptions.length > 0) {
+      const selectedIndexes = data.selectedOptions.map(opt => workoutOptionsToindex[opt]);
+      setSelectedOptions(selectedIndexes);
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const formattedDate = `${yyyy}/${mm}/${dd}`;
+
+      handelWorkout({
+        date: formattedDate,
+        exercises: selectedIndexes
+      });
+    } else {
+      console.log("No options selected");
     }
   };
 
@@ -88,11 +94,10 @@ export default function CheckboxForm() {
             {options.map((opt, index) => (
               <label
                 key={index}
-                className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-md ${
-                  watchedOptions.includes(opt)
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 shadow-md'
-                    : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500'
-                }`}
+                className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-md ${watchedOptions.includes(opt)
+                    ? 'border-blue-500 bg-blue-50 shadow-md'
+                    : 'border-gray-200 bg-white hover:border-blue-300'
+                  }`}
               >
                 <input
                   type="checkbox"
@@ -104,9 +109,8 @@ export default function CheckboxForm() {
                   className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 mr-3"
                 />
                 <span className="text-2xl mr-3">{workoutEmojis[opt]}</span>
-                <span className={`text-lg font-medium ${
-                  watchedOptions.includes(opt) ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-200'
-                }`}>
+                <span className={`text-lg font-medium ${watchedOptions.includes(opt) ? 'text-blue-700' : 'text-gray-700'
+                  }`}>
                   {opt}
                 </span>
               </label>
@@ -127,11 +131,10 @@ export default function CheckboxForm() {
           <button
             onClick={handleSubmit(onSubmit)}
             disabled={loading}
-            className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
-              loading
+            className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 ${loading
                 ? 'bg-gray-400 cursor-not-allowed'
                 : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:-translate-y-1'
-            } text-white`}
+              } text-white`}
           >
             {loading ? (
               <span className="flex items-center justify-center">
